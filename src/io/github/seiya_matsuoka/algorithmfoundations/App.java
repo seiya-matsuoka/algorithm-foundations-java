@@ -1,14 +1,16 @@
 package io.github.seiya_matsuoka.algorithmfoundations;
 
 import io.github.seiya_matsuoka.algorithmfoundations.runner.ArrayRunner;
+import io.github.seiya_matsuoka.algorithmfoundations.runner.StringRunner;
 import io.github.seiya_matsuoka.algorithmfoundations.runner.TopicRunner;
 import io.github.seiya_matsuoka.algorithmfoundations.runner.TraversalRunner;
 
 /**
  * リポジトリ全体の共通エントリーポイント
  *
- * <p>このクラスの役割は、コマンドライン引数を読み取り、 どの学習トピックを実行するかを判定して対応する runner に処理を渡す。
- * アルゴリズム本体の処理は持たず、実行の振り分けだけを担当する。
+ * <p>このクラスの役割は、コマンドライン引数を読み取り、 どの学習トピックを実行するかを判定して対応する runner に処理を渡すこと。
+ *
+ * <p>アルゴリズム本体の処理は持たず、実行の振り分けだけを担当する。
  */
 public class App {
   public static void main(String[] args) {
@@ -25,7 +27,7 @@ public class App {
     TopicRunner runner = resolveRunner(options.getTopic());
     if (runner == null) {
       System.out.println("未対応の topic が指定されました: " + options.getTopic());
-      System.out.println("現在実行できる topic は traversal, array です。\n");
+      System.out.println("現在実行できる topic は traversal, array, string です。\n");
       printUsage();
       return;
     }
@@ -37,7 +39,7 @@ public class App {
   /**
    * コマンドライン引数を簡易的に解析する。
    *
-   * <p>外部ライブラリを使わず、学習用として最低限必要なオプションだけを 自前で読み取る構成にしている。
+   * <p>外部ライブラリを使わず、学習用として最低限必要なオプションだけを 自前で読み取る構成としている。
    */
   private static RunnerOptions parseOptions(String[] args) {
     String topic = null;
@@ -94,12 +96,13 @@ public class App {
   /**
    * topic 名に応じて実行する runner を選ぶ。
    *
-   * <p>ここは「どの学習トピックを走らせるか」を決めるルーティング部分となる
+   * <p>ここは「どの学習トピックを走らせるか」を決めるルーティング部分。
    */
   private static TopicRunner resolveRunner(String topic) {
     return switch (topic) {
       case "traversal" -> new TraversalRunner();
       case "array" -> new ArrayRunner();
+      case "string" -> new StringRunner();
       default -> null;
     };
   }
@@ -114,6 +117,7 @@ public class App {
     System.out.println("現在指定できる topic:");
     System.out.println("  traversal  : 走査・集計の基本を学ぶ");
     System.out.println("  array      : 配列の基本を学ぶ");
+    System.out.println("  string     : 文字列の基本を学ぶ");
     System.out.println();
     System.out.println("共通オプション:");
     System.out.println("  --input <値>    入力値を直接指定する");
@@ -128,5 +132,8 @@ public class App {
     System.out.println(
         "  java -cp out io.github.seiya_matsuoka.algorithmfoundations.App --topic array --input"
             + " 5,3,8,1,4");
+    System.out.println(
+        "  java -cp out io.github.seiya_matsuoka.algorithmfoundations.App --topic string --input"
+            + " algorithm --target a");
   }
 }
