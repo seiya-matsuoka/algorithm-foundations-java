@@ -1,6 +1,7 @@
 package io.github.seiya_matsuoka.algorithmfoundations;
 
 import io.github.seiya_matsuoka.algorithmfoundations.runner.ArrayRunner;
+import io.github.seiya_matsuoka.algorithmfoundations.runner.ComplexityRunner;
 import io.github.seiya_matsuoka.algorithmfoundations.runner.StringRunner;
 import io.github.seiya_matsuoka.algorithmfoundations.runner.TopicRunner;
 import io.github.seiya_matsuoka.algorithmfoundations.runner.TraversalRunner;
@@ -27,7 +28,7 @@ public class App {
     TopicRunner runner = resolveRunner(options.getTopic());
     if (runner == null) {
       System.out.println("未対応の topic が指定されました: " + options.getTopic());
-      System.out.println("現在実行できる topic は traversal, array, string です。\n");
+      System.out.println("実行できる topic は traversal, array, string, complexity です。\n");
       printUsage();
       return;
     }
@@ -103,6 +104,7 @@ public class App {
       case "traversal" -> new TraversalRunner();
       case "array" -> new ArrayRunner();
       case "string" -> new StringRunner();
+      case "complexity" -> new ComplexityRunner();
       default -> null;
     };
   }
@@ -115,9 +117,10 @@ public class App {
             + " [options]");
     System.out.println();
     System.out.println("現在指定できる topic:");
-    System.out.println("  traversal  : 走査・集計の基本を学ぶ");
-    System.out.println("  array      : 配列の基本を学ぶ");
-    System.out.println("  string     : 文字列の基本を学ぶ");
+    System.out.println("  traversal   : 走査・集計の基本を学ぶ");
+    System.out.println("  array       : 配列の基本を学ぶ");
+    System.out.println("  string      : 文字列の基本を学ぶ");
+    System.out.println("  complexity  : 計算量の基本を学ぶ");
     System.out.println();
     System.out.println("共通オプション:");
     System.out.println("  --input <値>    入力値を直接指定する");
@@ -135,5 +138,8 @@ public class App {
     System.out.println(
         "  java -cp out io.github.seiya_matsuoka.algorithmfoundations.App --topic string --input"
             + " algorithm --target a");
+    System.out.println(
+        "  java -cp out io.github.seiya_matsuoka.algorithmfoundations.App --topic complexity --size"
+            + " 1000");
   }
 }
